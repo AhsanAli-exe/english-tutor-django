@@ -1,10 +1,8 @@
 import os
 import json
-import requests
 import whisper
 import pyttsx3
 import warnings
-import time
 from openai import OpenAI
 from utils.audio_2 import record_press_enter1,transcribe_audio1
 
@@ -35,9 +33,6 @@ class EnglishTutor:
             engine = pyttsx3.init()
 
         voices = engine.getProperty("voices")
-        print("Available voices:")
-        for i,voice in enumerate(voices):
-            print(f"  {i}: {voice.name} ({voice.id})")
 
         selected_id = None
         if len(voices) > 1:
@@ -77,10 +72,10 @@ class EnglishTutor:
         return self._get_voice_input() if choice == "1" else self._get_text_input()
 
     def _get_voice_input(self):
-        audio_path = record_press_enter1(SAMPLE_RATE, channels=1)
+        audio_path = record_press_enter1(SAMPLE_RATE,channels=1)
         if not audio_path:
             return None
-        transcript,_ = transcribe_audio1(audio_path, self.whisper_model, SAMPLE_RATE)
+        transcript,_ = transcribe_audio1(audio_path,self.whisper_model,SAMPLE_RATE)
         if transcript:
             print(f"You said: {transcript}")
         return transcript

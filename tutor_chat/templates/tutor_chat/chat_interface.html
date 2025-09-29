@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex - English Tutor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chat-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.user .message-content {
+            background: #4facfe;
+            color: white;
+            margin-left: 20px;
+        }
+
+        .message.ai .message-content {
+            background: white;
+            color: #333;
+            border: 1px solid #e1e5e9;
+            margin-right: 20px;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        .message.user .message-avatar {
+            background: #667eea;
+            color: white;
+            margin-left: 8px;
+        }
+
+        .message.ai .message-avatar {
+            background: #4facfe;
+            color: white;
+            margin-right: 8px;
+        }
+
+        .grammar-info {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #f0f8ff;
+            border-left: 4px solid #4facfe;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .grammar-info.error {
+            background: #fff5f5;
+            border-left-color: #fc8181;
+        }
+
+        .grammar-info.correct {
+            background: #f0fff4;
+            border-left-color: #68d391;
+        }
+
+        .chat-input {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            border-radius: 25px;
+            padding: 5px;
+        }
+
+        .text-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 12px 16px;
+            background: transparent;
+            font-size: 14px;
+        }
+
+        .input-buttons {
+            display: flex;
+            gap: 8px;
+            margin-left: 8px;
+        }
+
+        .btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .btn-voice {
+            background: #4facfe;
+            color: white;
+        }
+
+        .btn-voice:hover {
+            background: #2196f3;
+            transform: scale(1.05);
+        }
+
+        .btn-voice.recording {
+            background: #f56565;
+            animation: pulse 1s infinite;
+        }
+
+        .btn-send {
+            background: #4facfe;
+            color: white;
+        }
+
+        .btn-send:hover {
+            background: #2196f3;
+            transform: scale(1.05);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #666;
+            padding: 40px 20px;
+            font-size: 16px;
+        }
+
+        .welcome-message h2 {
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+
+        .btn-clear {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-clear:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .chat-header {
+            position: relative;  /* Add this for button positioning */
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🤖 Alex - Your English Tutor</h1>
+            <p>Practice English with AI-powered grammar correction</p>
+            <button class="btn-clear" id="clearHistoryBtn" title="Clear Chat History">🗑️ Clear History</button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            {% if recent_messages %}
+                {% for message in recent_messages %}
+                    <div class="message user">
+                        <div class="message-content">{{ message.user_message }}</div>
+                        <div class="message-avatar">U</div>
+                    </div>
+                    <div class="message ai">
+                        <div class="message-avatar">A</div>
+                        <div class="message-content">
+                            {{ message.ai_response }}
+                            {% if message.has_errors %}
+                                <div class="grammar-info error">
+                                    <strong>Correction:</strong> {{ message.corrected_sentence }}<br>
+                                    <strong>Explanation:</strong> {{ message.explanation }}
+                                </div>
+                            {% else %}
+                                <div class="grammar-info correct">
+                                    <strong>Perfect grammar!</strong> ✅
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="welcome-message">
+                    <h2>Welcome to Alex! 👋</h2>
+                    <p>I'm your AI English tutor. Start a conversation by typing or speaking!</p>
+                    <p>I'll help you with grammar, spelling, and improve your English skills.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="chat-input">
+            <div class="input-container">
+                <input type="text" class="text-input" id="messageInput" 
+                       placeholder="Type your message here..." />
+                <div class="input-buttons">
+                    <button class="btn btn-voice" id="voiceBtn" title="Voice Input">🎤</button>
+                    <button class="btn btn-send" id="sendBtn" title="Send Message">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const voiceBtn = document.getElementById('voiceBtn');
+        const chatMessages = document.getElementById('chatMessages');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        
+    // Web Speech API variables (much more reliable than audio files)
+    let recognition = null;
+    let isListening = false;
+    
+    // Send message on Enter key
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+    
+    // Send button click
+    sendBtn.addEventListener('click', sendMessage);
+    
+    // Voice button click - using Web Speech API
+    voiceBtn.addEventListener('click', function() {
+        if (!isListening) {
+            startListening();
+        } else {
+            stopListening();
+        }
+    });
+    
+    function startListening() {
+        // Check if browser supports Web Speech API
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            alert('Your browser does not support speech recognition. Please use Chrome or Edge.');
+            return;
+        }
+        
+        // Create speech recognition instance
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+        
+        // Update button appearance
+        voiceBtn.classList.add('recording');
+        voiceBtn.innerHTML = '⏹️';
+        voiceBtn.title = 'Stop Listening';
+        isListening = true;
+        messageInput.disabled = true;
+        sendBtn.disabled = true;
+        
+        // Handle speech recognition results
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            console.log('Speech recognized:', transcript);
+            
+            // Send the transcribed text as a regular text message
+            sendVoiceMessage(transcript);
+        };
+        
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            alert('Speech recognition error: ' + event.error + '. Please try again.');
+            resetVoiceButton();
+        };
+        
+        recognition.onend = function() {
+            resetVoiceButton();
+        };
+        
+        // Start listening
+        recognition.start();
+    }
+    
+    function stopListening() {
+        if (recognition && isListening) {
+            recognition.stop();
+            resetVoiceButton();
+        }
+    }
+    
+    function resetVoiceButton() {
+        voiceBtn.classList.remove('recording');
+        voiceBtn.innerHTML = '🎤';
+        voiceBtn.title = 'Voice Input';
+        isListening = false;
+        messageInput.disabled = false;
+        sendBtn.disabled = false;
+    }
+    
+    function sendVoiceMessage(transcript) {
+        // Show the user's speech immediately
+        addMessageToChat('user', transcript);
+        addTypingIndicator();
+        
+        // Send to backend as a text message (voice transcription already done by browser)
+        fetch('/api/message/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: transcript,
+                input_method: 'voice'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            removeTypingIndicator();
+            if (data.success) {
+                addAIResponse(data);
+            } else {
+                addMessageToChat('ai', 'Sorry, I encountered an error: ' + (data.error || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            removeTypingIndicator();
+            console.error('Error:', error);
+            addMessageToChat('ai', 'Sorry, I\'m having trouble connecting right now. Please try again.');
+        });
+    }
+        
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            messageInput.disabled = true;
+            sendBtn.disabled = true;
+            
+            addMessageToChat('user', message);
+            messageInput.value = '';
+            addTypingIndicator();
+            
+            fetch('/api/message/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    input_method: 'text'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                removeTypingIndicator();
+                if (data.success) {
+                    addAIResponse(data);
+                } else {
+                    addMessageToChat('ai', 'Sorry, I encountered an error: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                removeTypingIndicator();
+                console.error('Error:', error);
+                addMessageToChat('ai', 'Sorry, I\'m having trouble connecting right now. Please try again.');
+            })
+            .finally(() => {
+                messageInput.disabled = false;
+                sendBtn.disabled = false;
+                messageInput.focus();
+            });
+        }
+        
+        clearHistoryBtn.addEventListener('click', function() {
+            if(confirm('Are you sure you want to clear your chat history?')){
+                clearChatHistory();
+            }
+        });
+
+        function clearChatHistory(){
+            clearHistoryBtn.disabled = true;
+            clearHistoryBtn.innerHTML = '⏳ Clearing...';
+            fetch('/api/clear/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Clear the chat display
+                    chatMessages.innerHTML = `
+                        <div class="welcome-message">
+                            <h2>Welcome to Alex! 👋</h2>
+                            <p>I'm your AI English tutor. Start a conversation by typing or speaking!</p>
+                            <p>I'll help you with grammar, spelling, and improve your English skills.</p>
+                        </div>
+                    `;
+                    console.log('Chat history cleared successfully');
+                } else {
+                    alert('Failed to clear chat history: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to clear chat history. Please try again.');
+            })
+            .finally(() => {
+                // Re-enable button
+                clearHistoryBtn.disabled = false;
+                clearHistoryBtn.innerHTML = '🗑️ Clear History';
+            });
+        }
+        
+        function addMessageToChat(type, content, grammarData = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            if (type === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="message-content">${escapeHtml(content)}</div>
+                    <div class="message-avatar">U</div>
+                `;
+            } else {
+                let grammarInfo = '';
+                if (grammarData) {
+                    if (grammarData.has_errors) {
+                        grammarInfo = `
+                            <div class="grammar-info error">
+                                <strong>Correction:</strong> ${escapeHtml(grammarData.corrected_sentence)}<br>
+                                <strong>Explanation:</strong> ${escapeHtml(grammarData.explanation)}
+                            </div>
+                        `;
+                    } else {
+                        grammarInfo = `
+                            <div class="grammar-info correct">
+                                <strong>Perfect grammar!</strong> ✅
+                            </div>
+                        `;
+                    }
+                }
+                
+                messageDiv.innerHTML = `
+                    <div class="message-avatar">A</div>
+                    <div class="message-content">
+                        ${escapeHtml(content)}
+                        ${grammarInfo}
+                    </div>
+                `;
+            }
+            
+            const welcomeMessage = chatMessages.querySelector('.welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.remove();
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function addAIResponse(data) {
+            // Construct full response to speak AND display (same logic as Final_Version.py)
+            let fullResponse = "";
+            if (data.has_errors && data.explanation) {
+                // If there are errors: show explanation + conversational response
+                fullResponse = data.explanation + " " + data.ai_response;
+            } else {
+                // If no errors: show "perfectly said" + conversational response  
+                fullResponse = "That's perfectly said! " + data.ai_response;
+            }
+            
+            // Show the grammar correction info separately (for visual reference)
+            const grammarData = {
+                corrected_sentence: data.corrected_sentence,
+                has_errors: data.has_errors,
+                explanation: data.explanation
+            };
+            
+            // Display the FULL response (what Alex speaks) as the main AI text
+            addMessageToChat('ai', fullResponse, grammarData);
+            
+            // Make Alex speak the same complete response
+            speakResponse(fullResponse);
+        }
+        
+        function addTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">A</div>
+                <div class="message-content">Alex is thinking...</div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function removeTypingIndicator() {
+            const typing = chatMessages.querySelector('.typing-indicator');
+            if (typing) {
+                typing.remove();
+            }
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function speakResponse(text){
+            if("speechSynthesis" in window){
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                speechSynthesis.speak(utterance);
+            }
+        }
+        
+        // Focus input on page load
+        messageInput.focus();
+    </script>
+</body>
+</html>

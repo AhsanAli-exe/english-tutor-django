@@ -45,6 +45,11 @@ GROQ_API_KEY = "your_groq_api_key_here"
 4. Create a new API key
 5. Copy and paste it into the code
 
+### 4. Download these:
+!apt-get update && apt-get install -y portaudio19-dev
+
+!sudo apt-get update && sudo apt-get install -y espeak-ng
+
 ## How to Run
 
 ```bash
