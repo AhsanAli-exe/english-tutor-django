@@ -1,0 +1,82 @@
+[
+  {
+    "role": "system",
+    "content": "You are an English grammar teacher. When given an English sentence to correct:\n1. ONLY fix actual grammar, spelling, or word order errors\n2. DO NOT change the meaning or add/remove content\n3. If the sentence is already correct, return it unchanged\n4. Respond with ONLY a JSON object: {\"correction\": \"corrected sentence\", \"explanation\": \"what was wrong\"}\nNo other text."
+  },
+  {
+    "role": "assistant",
+    "content": "{\"correction\": \"The weather is very rainy. The girls are playing football.\", \"explanation\": \"Correct\", \"spoken_response\": \"Perfect! You've got it just right. Well done!\"}"
+  },
+  {
+    "role": "user",
+    "content": "Please correct this English sentence: The weather are very rainy. The voice is playing."
+  },
+  {
+    "role": "assistant",
+    "content": "{\"correction\": \"The weather is very rainy. The voice is playing.\", \"explanation\": \"Subject-verb agreement\", \"spoken_response\": \"Great job on correcting 'are' to 'is'! Remember, when we talk about a single person or thing, like the voice, we use the singular form of the verb.\"}"
+  },
+  {
+    "role": "user",
+    "content": "Please correct this English sentence: Hello, there is three books in the store. The weather are very rainy. The girl are playing"
+  },
+  {
+    "role": "assistant",
+    "content": "{\"correction\": \"Hello, there are three books in the store. The weather is very rainy. The girls are playing.\", \"explanation\": \"Subject-verb agreement and correct pronoun usage\", \"spoken_response\": \"Excellent job on correcting 'is' to 'are' for the plural subjects! Now, let's work on that sentence – can you think of a way to make it sound more natural?\"}"
+  },
+  {
+    "role": "user",
+    "content": "Please correct this English sentence: There is three books on the store. The weather are very rainy. The boy are playing cricket."
+  },
+  {
+    "role": "assistant",
+    "content": "{\"correction\": \"There are three books in the store. The weather is very rainy. The boys are playing cricket.\", \"explanation\": \"Subject-verb agreement and correct pronoun usage\", \"spoken_response\": \"Great job on correcting 'is' to 'are' for the plural subjects! Remember, when we talk about a group of people or things, like the boys, we use the plural form of the verb.\"}"
+  },
+  {
+    "role": "user",
+    "content": "Please correct this English sentence: You can sit to me next. The dog run on the field. The dog is path-varying. It is so much settling."
+  },
+  {
+    "role": "assistant",
+    "content": "{\"correction\": \"You can sit next to me. The dog runs on the field. The dog is pacing. It is so much easier.\", \"explanation\": \"Corrected verb forms and idiomatic expressions\", \"spoken_response\": \"Excellent job on correcting 'run' to 'runs'! Now, let's work on those other sentences – can you think of a way to make them sound more natural?\"}"
+  },
+  {
+    "role": "user",
+    "content": "Please correct this English sentence: Hello, how is you? The weather are very rainy. Thank you."
+  },
+  {
+    "role": "assistant",
+    "content": "{\"correction\": \"Hello, how are you? The weather is very rainy. Thank you.\", \"explanation\": \"Corrected pronoun usage\", \"spoken_response\": \"Great job on correcting 'you' to 'are you'! Now, let's work on that sentence – can you think of a way to make it sound more natural?\"}"
+  },
+  {
+    "role": "user",
+    "content": "Please correct this English sentence: Okay, I can work on it. So, let's try again. Hello, how are you? The weather is very rainy. And don't forget to bring your umbrellas."
+  },
+  {
+    "role": "assistant",
+    "content": "{\"correction\": \"Okay, I can work on it. So, let's try again. Hello, how are you? The weather is very rainy. And don't forget to bring your umbrellas.\", \"explanation\": \"Correct\", \"spoken_response\": \"Perfect! You've got it just right. Well done!\"}"
+  },
+  {
+    "role": "user",
+    "content": "Please correct this English sentence: Hello, the weather is r raining."
+  },
+  {
+    "role": "assistant",
+    "content": "{\"correction\": \"Hello, the weather is raining.\", \"explanation\": \"Added hyphen to compound adjective\", \"spoken_response\": \"Excellent job on correcting 'r' to 'rainning'! Now, let's work on that greeting – can you think of a way to make it sound more friendly?\"}"
+  },
+  {
+    "role": "user",
+    "content": "Please correct this English sentence: There is three books in the library."
+  },
+  {
+    "role": "assistant",
+    "content": "{\"correction\": \"There are three books in the library.\", \"explanation\": \"Subject-verb agreement\", \"spoken_response\": \"Great job on correcting 'is' to 'are' for the plural subject!\"}"
+  },
+  {
+    "role": "user",
+    "content": "Please correct this English sentence: The kids was playing and the weather was very rainy but the weather could be sunny but everyone is not playing."
+  },
+  {
+    "role": "assistant",
+    "content": "{\"correction\": \"The kids were playing, and the weather was very rainy, but the weather could be sunny, but everyone isn't playing.\", \"explanation\": \"Added comma for clarity, corrected verb tense consistency, and 'isn't' to 'is not'\", \"spoken_response\": \"Excellent job on correcting some of those tricky sentences! Now, let's work on making them sound more natural and clear.\"}"
+  }
+]
