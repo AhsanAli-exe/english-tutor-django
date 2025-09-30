@@ -37,7 +37,7 @@ def chat_interface(request):
     return render(request, 'tutor_chat/chat_interface.html', context)
 
 
-def call_groq(user_text):
+def call_groq(user_text, session_id):
     client = OpenAI(
         api_key=GROQ_API_KEY,
         base_url="https://api.groq.com/openai/v1",
@@ -80,13 +80,24 @@ Output: {{"corrected_sentence": "favourite scene is when batman fights joker", "
 
 Now analyze and return JSON."""
 
+    # Get conversation history from database for context (like Final_Version.py)
+    recent_messages = ChatMessage.objects.filter(session_id=session_id).order_by('timestamp')[-5:]  # Last 5 messages for context
+
+    # Build conversation history for AI
+    conversation_messages = [{"role": "system", "content": system_message}]
+
+    # Add recent conversation history
+    for msg in recent_messages:
+        conversation_messages.append({"role": "user", "content": msg.user_message})
+        conversation_messages.append({"role": "assistant", "content": msg.ai_response})
+
+    # Add current message
+    conversation_messages.append({"role": "user", "content": user_message})
+
     try:
         response = client.chat.completions.create(
                 model = GROQ_MODEL,
-                messages = [
-                    {"role": "system", "content": system_message},
-                    {"role": "user", "content": user_message}
-                ],
+                messages = conversation_messages,  # Now includes conversation history!
                 temperature = 0.3,
                 max_tokens = 500
             )
@@ -141,7 +152,7 @@ def process_message(request):
             transcription = user_message  # For voice, this is already transcribed by browser
             
             
-            ai_response = call_groq(user_message)
+            ai_response = call_groq(user_message, session_id)
             
             # Save message to database
             chat_message = ChatMessage.objects.create(
