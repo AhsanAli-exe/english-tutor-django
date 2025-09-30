@@ -81,7 +81,8 @@ Output: {{"corrected_sentence": "favourite scene is when batman fights joker", "
 Now analyze and return JSON."""
 
     # Get conversation history from database for context (like Final_Version.py)
-    recent_messages = ChatMessage.objects.filter(session_id=session_id).order_by('timestamp')[-5:]  # Last 5 messages for context
+    recent_messages = ChatMessage.objects.filter(session_id=session_id).order_by('-timestamp')[:5]
+    recent_messages = list(reversed(recent_messages))  # Convert to list and reverse to get chronological order
 
     # Build conversation history for AI
     conversation_messages = [{"role": "system", "content": system_message}]
