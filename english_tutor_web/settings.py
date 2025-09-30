@@ -121,16 +121,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-import os
-
-# Add at the bottom of settings.py:
-if 'RENDER' in os.environ:
-    DEBUG = False
-    ALLOWED_HOSTS = ['.onrender.com']
-    
-    import dj_database_url
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-    }

@@ -4,6 +4,3 @@ whisper
 pyttsx3
 sounddevice
 soundfile
-psycopg2-binary
-gunicorn
-dj-database-url
